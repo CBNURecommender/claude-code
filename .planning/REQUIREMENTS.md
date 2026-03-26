@@ -108,7 +108,7 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Feature | Reason |
 |---------|--------|
-| Per-user source/keyword customization | Team shares settings; divergent preferences → run separate instances |
+| Per-user source/keyword customization | Team shares settings; divergent preferences -> run separate instances |
 | Real-time push notifications | Defeats "briefing" mental model; scheduled + on-demand sufficient |
 | Full article content scraping | Copyright concerns, message size explosion, defeats one-line summary purpose |
 | Web dashboard / admin UI | Telegram is the sole interface; web UI is over-engineering for 2-5 users |
@@ -124,63 +124,63 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SRC-01 | TBD | Pending |
-| SRC-02 | TBD | Pending |
-| SRC-03 | TBD | Pending |
-| SRC-04 | TBD | Pending |
-| SRC-05 | TBD | Pending |
-| KWD-01 | TBD | Pending |
-| KWD-02 | TBD | Pending |
-| KWD-03 | TBD | Pending |
-| KWD-04 | TBD | Pending |
-| KWD-05 | TBD | Pending |
-| KWD-06 | TBD | Pending |
-| KWD-07 | TBD | Pending |
-| KWD-08 | TBD | Pending |
-| COL-01 | TBD | Pending |
-| COL-02 | TBD | Pending |
-| COL-03 | TBD | Pending |
-| COL-04 | TBD | Pending |
-| COL-05 | TBD | Pending |
-| COL-06 | TBD | Pending |
-| COL-07 | TBD | Pending |
-| COL-08 | TBD | Pending |
-| SUM-01 | TBD | Pending |
-| SUM-02 | TBD | Pending |
-| SUM-03 | TBD | Pending |
-| SUM-04 | TBD | Pending |
-| SUM-05 | TBD | Pending |
-| DLV-01 | TBD | Pending |
-| DLV-02 | TBD | Pending |
-| DLV-03 | TBD | Pending |
-| DLV-04 | TBD | Pending |
-| DLV-05 | TBD | Pending |
-| DLV-06 | TBD | Pending |
-| DLV-07 | TBD | Pending |
-| STR-01 | TBD | Pending |
-| STR-02 | TBD | Pending |
-| BOT-01 | TBD | Pending |
-| BOT-02 | TBD | Pending |
-| BOT-03 | TBD | Pending |
-| BOT-04 | TBD | Pending |
-| BOT-05 | TBD | Pending |
-| INF-01 | TBD | Pending |
-| INF-02 | TBD | Pending |
-| INF-03 | TBD | Pending |
-| INF-04 | TBD | Pending |
-| INF-05 | TBD | Pending |
-| INF-06 | TBD | Pending |
-| DEP-01 | TBD | Pending |
-| DEP-02 | TBD | Pending |
-| DEP-03 | TBD | Pending |
-| DEP-04 | TBD | Pending |
-| DEP-05 | TBD | Pending |
+| SRC-01 | Phase 4 | Pending |
+| SRC-02 | Phase 4 | Pending |
+| SRC-03 | Phase 4 | Pending |
+| SRC-04 | Phase 4 | Pending |
+| SRC-05 | Phase 2 | Pending |
+| KWD-01 | Phase 4 | Pending |
+| KWD-02 | Phase 4 | Pending |
+| KWD-03 | Phase 4 | Pending |
+| KWD-04 | Phase 4 | Pending |
+| KWD-05 | Phase 4 | Pending |
+| KWD-06 | Phase 2 | Pending |
+| KWD-07 | Phase 2 | Pending |
+| KWD-08 | Phase 2 | Pending |
+| COL-01 | Phase 2 | Pending |
+| COL-02 | Phase 2 | Pending |
+| COL-03 | Phase 2 | Pending |
+| COL-04 | Phase 2 | Pending |
+| COL-05 | Phase 2 | Pending |
+| COL-06 | Phase 2 | Pending |
+| COL-07 | Phase 2 | Pending |
+| COL-08 | Phase 2 | Pending |
+| SUM-01 | Phase 3 | Pending |
+| SUM-02 | Phase 3 | Pending |
+| SUM-03 | Phase 3 | Pending |
+| SUM-04 | Phase 3 | Pending |
+| SUM-05 | Phase 3 | Pending |
+| DLV-01 | Phase 5 | Pending |
+| DLV-02 | Phase 5 | Pending |
+| DLV-03 | Phase 5 | Pending |
+| DLV-04 | Phase 5 | Pending |
+| DLV-05 | Phase 5 | Pending |
+| DLV-06 | Phase 5 | Pending |
+| DLV-07 | Phase 5 | Pending |
+| STR-01 | Phase 3 | Pending |
+| STR-02 | Phase 3 | Pending |
+| BOT-01 | Phase 4 | Pending |
+| BOT-02 | Phase 4 | Pending |
+| BOT-03 | Phase 4 | Pending |
+| BOT-04 | Phase 4 | Pending |
+| BOT-05 | Phase 4 | Pending |
+| INF-01 | Phase 1 | Pending |
+| INF-02 | Phase 1 | Pending |
+| INF-03 | Phase 1 | Pending |
+| INF-04 | Phase 1 | Pending |
+| INF-05 | Phase 1 | Pending |
+| INF-06 | Phase 1 | Pending |
+| DEP-01 | Phase 6 | Pending |
+| DEP-02 | Phase 6 | Pending |
+| DEP-03 | Phase 6 | Pending |
+| DEP-04 | Phase 6 | Pending |
+| DEP-05 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 46 total
-- Mapped to phases: 0
-- Unmapped: 46 ⚠️
+- Mapped to phases: 46
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-26*
-*Last updated: 2026-03-26 after initial definition*
+*Last updated: 2026-03-26 after roadmap creation*
