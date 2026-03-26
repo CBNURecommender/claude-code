@@ -93,7 +93,9 @@ Plans:
   1. Running `./deploy.sh` syncs code to GCP instance 34.172.56.22 via rsync, excluding .env, data/, briefings/, and logs/
   2. The system runs as a systemd service that auto-starts on server reboot and auto-restarts on crash
   3. After deployment, the bot responds to commands and delivers scheduled briefings on the server without manual intervention
-**Plans**: TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 06-01-PLAN.md — systemd service file, deploy script, and .env.example
 
 ## Progress
 
@@ -108,4 +110,4 @@ Note: Phase 4 depends only on Phase 1, so it can execute in parallel with Phases
 | 3. Summarization Pipeline | 0/? | Not started | - |
 | 4. Bot Interface & Source Management | 0/? | Not started | - |
 | 5. Briefing Delivery & Scheduling | 0/? | Not started | - |
-| 6. Production Deployment | 0/? | Not started | - |
+| 6. Production Deployment | 0/1 | Planned | - |
