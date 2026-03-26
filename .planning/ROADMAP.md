@@ -83,7 +83,10 @@ Plans:
   3. User can trigger an immediate briefing via /briefing and an immediate collection via /collect
   4. When a briefing message exceeds 4096 characters, it is split across multiple messages with proper boundaries
   5. When no new articles exist at briefing time, a simple "no new articles" notification is sent (no .md file created)
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 05-01-PLAN.md — Telegram delivery service with message splitting and multi-user delivery
+- [ ] 05-02-PLAN.md — JobQueue scheduling, /set_times /briefing /collect handlers, main.py wiring
 
 ### Phase 6: Production Deployment
 **Goal**: The system runs continuously on the GCP server with automatic restarts and safe deployment workflow
@@ -109,5 +112,5 @@ Note: Phase 4 depends only on Phase 1, so it can execute in parallel with Phases
 | 2. Collection Engine | 0/? | Not started | - |
 | 3. Summarization Pipeline | 0/? | Not started | - |
 | 4. Bot Interface & Source Management | 0/? | Not started | - |
-| 5. Briefing Delivery & Scheduling | 0/? | Not started | - |
+| 5. Briefing Delivery & Scheduling | 0/2 | Planned | - |
 | 6. Production Deployment | 0/1 | Planned | - |
