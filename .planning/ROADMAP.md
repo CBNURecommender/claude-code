@@ -31,7 +31,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. 13 initial news sources are auto-registered in the sources table on first run
   4. Application reads API keys and bot token from `.env` file and fails clearly if missing
   5. Log messages appear in `logs/` directory with structured format (timestamp, level, component)
-**Plans**: TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffolding, config loader, structured logging
+- [ ] 01-02-PLAN.md — Async SQLite database with 6 tables and 13 initial sources
+- [ ] 01-03-PLAN.md — Async main.py entry point wiring bot + DB + logging
 
 ### Phase 2: Collection Engine
 **Goal**: The system can fetch articles from RSS and HTML sources, filter by keywords, and store them in the database without duplicates
@@ -99,7 +103,7 @@ Note: Phase 4 depends only on Phase 1, so it can execute in parallel with Phases
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Database | 0/? | Not started | - |
+| 1. Foundation & Database | 0/3 | Planned | - |
 | 2. Collection Engine | 0/? | Not started | - |
 | 3. Summarization Pipeline | 0/? | Not started | - |
 | 4. Bot Interface & Source Management | 0/? | Not started | - |
