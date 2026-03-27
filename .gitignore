@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+
+# Environment
+.env
+
+# Data (generated on server)
+data/
+briefings/
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
