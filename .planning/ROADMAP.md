@@ -107,7 +107,7 @@ Plans:
   3. After deployment, the bot responds to commands and delivers scheduled briefings on the server without manual intervention
 **Plans:** 1 plan
 Plans:
-- [ ] 06-01-PLAN.md — systemd service file, deploy script, and .env.example
+- [x] 06-01-PLAN.md — systemd service file, deploy script, and .env.example
 
 ## Progress
 

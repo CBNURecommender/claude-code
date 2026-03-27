@@ -79,10 +79,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Deployment (DEP)
 
-- [ ] **DEP-01**: deploy.sh script syncs code to GCP instance (34.172.56.22) via rsync
-- [ ] **DEP-02**: systemd service file for always-on operation with auto-restart
-- [ ] **DEP-03**: Server reboot triggers automatic service start
-- [ ] **DEP-04**: Deploy excludes .env, data/, briefings/, logs/ to preserve server state
+- [x] **DEP-01**: deploy.sh script syncs code to GCP instance (34.172.56.22) via rsync
+- [x] **DEP-02**: systemd service file for always-on operation with auto-restart
+- [x] **DEP-03**: Server reboot triggers automatic service start
+- [x] **DEP-04**: Deploy excludes .env, data/, briefings/, logs/ to preserve server state
 - [x] **DEP-05**: .gitignore configured for Python, .env, data, briefings, logs
 
 ## v2 Requirements
@@ -170,10 +170,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INF-04 | Phase 1 | Complete |
 | INF-05 | Phase 1 | Complete |
 | INF-06 | Phase 1 | Complete |
-| DEP-01 | Phase 6 | Pending |
-| DEP-02 | Phase 6 | Pending |
-| DEP-03 | Phase 6 | Pending |
-| DEP-04 | Phase 6 | Pending |
+| DEP-01 | Phase 6 | Complete |
+| DEP-02 | Phase 6 | Complete |
+| DEP-03 | Phase 6 | Complete |
+| DEP-04 | Phase 6 | Complete |
 | DEP-05 | Phase 1 | Complete |
 
 **Coverage:**
