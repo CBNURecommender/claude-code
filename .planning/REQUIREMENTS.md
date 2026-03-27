@@ -62,9 +62,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Bot Interface (BOT)
 
-- [ ] **BOT-01**: /help command displays all available commands with descriptions
-- [ ] **BOT-02**: /status command shows source count, pending article count, last/next briefing times
-- [ ] **BOT-03**: /list_times command shows current briefing schedule
+- [x] **BOT-01**: /help command displays all available commands with descriptions
+- [x] **BOT-02**: /status command shows source count, pending article count, last/next briefing times
+- [x] **BOT-03**: /list_times command shows current briefing schedule
 - [x] **BOT-04**: All bot commands provide clear success/error feedback messages in Korean
 - [x] **BOT-05**: Bot automatically captures chat_id on first message from a user
 
@@ -159,9 +159,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DLV-07 | Phase 5 | Pending |
 | STR-01 | Phase 3 | Complete |
 | STR-02 | Phase 3 | Complete |
-| BOT-01 | Phase 4 | Pending |
-| BOT-02 | Phase 4 | Pending |
-| BOT-03 | Phase 4 | Pending |
+| BOT-01 | Phase 4 | Complete |
+| BOT-02 | Phase 4 | Complete |
+| BOT-03 | Phase 4 | Complete |
 | BOT-04 | Phase 4 | Complete |
 | BOT-05 | Phase 4 | Complete |
 | INF-01 | Phase 1 | Complete |

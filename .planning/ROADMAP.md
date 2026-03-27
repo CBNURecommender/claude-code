@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: Foundation & Database** - Async runtime, SQLite schema, logging, and configuration
 - [ ] **Phase 2: Collection Engine** - RSS and HTML parsers with keyword filtering and deduplication
 - [ ] **Phase 3: Summarization Pipeline** - Claude API integration with batched Korean summaries and briefing storage
-- [ ] **Phase 4: Bot Interface & Source Management** - Telegram bot commands for source, keyword, and system management
+- [x] **Phase 4: Bot Interface & Source Management** - Telegram bot commands for source, keyword, and system management (completed 2026-03-27)
 - [ ] **Phase 5: Briefing Delivery & Scheduling** - Scheduled and on-demand briefing delivery to multiple users
 - [ ] **Phase 6: Production Deployment** - systemd service, deploy script, and server configuration
 
@@ -75,12 +75,12 @@ Plans:
   3. /help shows all available commands with Korean descriptions; /status shows source count, pending articles, and briefing schedule
   4. All bot command responses provide clear success or error feedback in Korean
   5. Bot automatically captures and stores chat_id on first message from any new user
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 Plans:
 - [x] 04-01-PLAN.md — DB query layer for sources, keywords, chat_ids, and counts
 - [x] 04-02-PLAN.md — Source management commands (add, remove with confirm, list, enable, disable)
 - [x] 04-03-PLAN.md — Keyword management commands (per-source and global)
-- [ ] 04-04-PLAN.md — System commands (/help, /status, /list_times), chat_id auto-capture, handler wiring in main.py
+- [x] 04-04-PLAN.md — System commands (/help, /status, /list_times), chat_id auto-capture, handler wiring in main.py
 
 ### Phase 5: Briefing Delivery & Scheduling
 **Goal**: Briefings are delivered to all team members at configured times, with on-demand triggers and dynamic schedule changes
@@ -120,6 +120,6 @@ Note: Phase 4 depends only on Phase 1, so it can execute in parallel with Phases
 | 1. Foundation & Database | 0/3 | Planned | - |
 | 2. Collection Engine | 0/3 | Planned | - |
 | 3. Summarization Pipeline | 1/2 | In Progress|  |
-| 4. Bot Interface & Source Management | 3/4 | In Progress|  |
+| 4. Bot Interface & Source Management | 4/4 | Complete   | 2026-03-27 |
 | 5. Briefing Delivery & Scheduling | 0/2 | Planned | - |
 | 6. Production Deployment | 0/1 | Planned | - |
