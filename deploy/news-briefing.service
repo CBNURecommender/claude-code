@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=jihoon
 WorkingDirectory=/home/jihoon/news-briefing
-ExecStart=/home/jihoon/news-briefing/venv/bin/python -m src.main --daemon
+ExecStart=/home/jihoon/news-briefing/venv/bin/python -m src.main
 Restart=always
 RestartSec=10
 Environment=PYTHONUNBUFFERED=1
