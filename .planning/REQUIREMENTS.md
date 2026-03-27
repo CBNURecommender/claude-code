@@ -74,8 +74,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **INF-02**: SQLite database with WAL mode for concurrent access safety
 - [ ] **INF-03**: All DB tables created on first run (sources, source_keywords, global_keywords, articles, briefings, settings)
 - [ ] **INF-04**: 13 initial news sources auto-registered on first run
-- [ ] **INF-05**: Configuration via .env file (API keys, bot token)
-- [ ] **INF-06**: Structured logging to logs/ directory
+- [x] **INF-05**: Configuration via .env file (API keys, bot token)
+- [x] **INF-06**: Structured logging to logs/ directory
 
 ### Deployment (DEP)
 
@@ -83,7 +83,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DEP-02**: systemd service file for always-on operation with auto-restart
 - [ ] **DEP-03**: Server reboot triggers automatic service start
 - [ ] **DEP-04**: Deploy excludes .env, data/, briefings/, logs/ to preserve server state
-- [ ] **DEP-05**: .gitignore configured for Python, .env, data, briefings, logs
+- [x] **DEP-05**: .gitignore configured for Python, .env, data, briefings, logs
 
 ## v2 Requirements
 
@@ -168,13 +168,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INF-02 | Phase 1 | Pending |
 | INF-03 | Phase 1 | Pending |
 | INF-04 | Phase 1 | Pending |
-| INF-05 | Phase 1 | Pending |
-| INF-06 | Phase 1 | Pending |
+| INF-05 | Phase 1 | Complete |
+| INF-06 | Phase 1 | Complete |
 | DEP-01 | Phase 6 | Pending |
 | DEP-02 | Phase 6 | Pending |
 | DEP-03 | Phase 6 | Pending |
 | DEP-04 | Phase 6 | Pending |
-| DEP-05 | Phase 1 | Pending |
+| DEP-05 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 46 total
