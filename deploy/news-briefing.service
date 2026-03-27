@@ -1,0 +1,20 @@
+[Unit]
+Description=News Briefing Bot
+After=network.target
+
+[Service]
+Type=simple
+User=jihoon
+WorkingDirectory=/home/jihoon/news-briefing
+ExecStart=/home/jihoon/news-briefing/venv/bin/python -m src.main --daemon
+Restart=always
+RestartSec=10
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=/home/jihoon/news-briefing/.env
+
+# Logs
+StandardOutput=append:/home/jihoon/news-briefing/logs/service.log
+StandardError=append:/home/jihoon/news-briefing/logs/service-error.log
+
+[Install]
+WantedBy=multi-user.target
