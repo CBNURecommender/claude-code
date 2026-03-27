@@ -75,7 +75,7 @@ Plans:
   3. /help shows all available commands with Korean descriptions; /status shows source count, pending articles, and briefing schedule
   4. All bot command responses provide clear success or error feedback in Korean
   5. Bot automatically captures and stores chat_id on first message from any new user
-**Plans:** 4 plans
+**Plans:** 1/2 plans executed
 Plans:
 - [ ] 04-01-PLAN.md — DB query layer for sources, keywords, chat_ids, and counts
 - [ ] 04-02-PLAN.md — Source management commands (add, remove with confirm, list, enable, disable)
@@ -119,7 +119,7 @@ Note: Phase 4 depends only on Phase 1, so it can execute in parallel with Phases
 |-------|----------------|--------|-----------|
 | 1. Foundation & Database | 0/3 | Planned | - |
 | 2. Collection Engine | 0/3 | Planned | - |
-| 3. Summarization Pipeline | 0/? | Not started | - |
+| 3. Summarization Pipeline | 1/2 | In Progress|  |
 | 4. Bot Interface & Source Management | 0/4 | Planned | - |
 | 5. Briefing Delivery & Scheduling | 0/2 | Planned | - |
 | 6. Production Deployment | 0/1 | Planned | - |

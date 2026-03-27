@@ -39,11 +39,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Summarization (SUM)
 
-- [ ] **SUM-01**: System generates one-line summaries using Claude API in [핵심키워드] format
-- [ ] **SUM-02**: All summaries are in Korean regardless of source article language
-- [ ] **SUM-03**: Articles are batched into a single Claude API call per briefing cycle
+- [x] **SUM-01**: System generates one-line summaries using Claude API in [핵심키워드] format
+- [x] **SUM-02**: All summaries are in Korean regardless of source article language
+- [x] **SUM-03**: Articles are batched into a single Claude API call per briefing cycle
 - [ ] **SUM-04**: Once an article is summarized, it is marked is_briefed=1 and excluded from future briefings
-- [ ] **SUM-05**: System falls back to raw article title list if Claude API fails after 3 retries
+- [x] **SUM-05**: System falls back to raw article title list if Claude API fails after 3 retries
 
 ### Briefing Delivery (DLV)
 
@@ -145,11 +145,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COL-06 | Phase 2 | Complete |
 | COL-07 | Phase 2 | Complete |
 | COL-08 | Phase 2 | Complete |
-| SUM-01 | Phase 3 | Pending |
-| SUM-02 | Phase 3 | Pending |
-| SUM-03 | Phase 3 | Pending |
+| SUM-01 | Phase 3 | Complete |
+| SUM-02 | Phase 3 | Complete |
+| SUM-03 | Phase 3 | Complete |
 | SUM-04 | Phase 3 | Pending |
-| SUM-05 | Phase 3 | Pending |
+| SUM-05 | Phase 3 | Complete |
 | DLV-01 | Phase 5 | Pending |
 | DLV-02 | Phase 5 | Pending |
 | DLV-03 | Phase 5 | Pending |
