@@ -70,10 +70,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Infrastructure (INF)
 
-- [ ] **INF-01**: System runs as a single Python async process (bot + scheduler in one event loop)
-- [ ] **INF-02**: SQLite database with WAL mode for concurrent access safety
-- [ ] **INF-03**: All DB tables created on first run (sources, source_keywords, global_keywords, articles, briefings, settings)
-- [ ] **INF-04**: 13 initial news sources auto-registered on first run
+- [x] **INF-01**: System runs as a single Python async process (bot + scheduler in one event loop)
+- [x] **INF-02**: SQLite database with WAL mode for concurrent access safety
+- [x] **INF-03**: All DB tables created on first run (sources, source_keywords, global_keywords, articles, briefings, settings)
+- [x] **INF-04**: 13 initial news sources auto-registered on first run
 - [x] **INF-05**: Configuration via .env file (API keys, bot token)
 - [x] **INF-06**: Structured logging to logs/ directory
 
@@ -164,10 +164,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BOT-03 | Phase 4 | Pending |
 | BOT-04 | Phase 4 | Pending |
 | BOT-05 | Phase 4 | Pending |
-| INF-01 | Phase 1 | Pending |
-| INF-02 | Phase 1 | Pending |
-| INF-03 | Phase 1 | Pending |
-| INF-04 | Phase 1 | Pending |
+| INF-01 | Phase 1 | Complete |
+| INF-02 | Phase 1 | Complete |
+| INF-03 | Phase 1 | Complete |
+| INF-04 | Phase 1 | Complete |
 | INF-05 | Phase 1 | Complete |
 | INF-06 | Phase 1 | Complete |
 | DEP-01 | Phase 6 | Pending |
