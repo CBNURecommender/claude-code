@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Collection Engine** - RSS and HTML parsers with keyword filtering and deduplication
 - [ ] **Phase 3: Summarization Pipeline** - Claude API integration with batched Korean summaries and briefing storage
 - [x] **Phase 4: Bot Interface & Source Management** - Telegram bot commands for source, keyword, and system management (completed 2026-03-27)
-- [ ] **Phase 5: Briefing Delivery & Scheduling** - Scheduled and on-demand briefing delivery to multiple users
+- [x] **Phase 5: Briefing Delivery & Scheduling** - Scheduled and on-demand briefing delivery to multiple users (completed 2026-03-27)
 - [ ] **Phase 6: Production Deployment** - systemd service, deploy script, and server configuration
 
 ## Phase Details
@@ -92,10 +92,10 @@ Plans:
   3. User can trigger an immediate briefing via /briefing and an immediate collection via /collect
   4. When a briefing message exceeds 4096 characters, it is split across multiple messages with proper boundaries
   5. When no new articles exist at briefing time, a simple "no new articles" notification is sent (no .md file created)
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 Plans:
 - [x] 05-01-PLAN.md — Telegram delivery service with message splitting and multi-user delivery
-- [ ] 05-02-PLAN.md — JobQueue scheduling, /set_times /briefing /collect handlers, main.py wiring
+- [x] 05-02-PLAN.md — JobQueue scheduling, /set_times /briefing /collect handlers, main.py wiring
 
 ### Phase 6: Production Deployment
 **Goal**: The system runs continuously on the GCP server with automatic restarts and safe deployment workflow
@@ -121,5 +121,5 @@ Note: Phase 4 depends only on Phase 1, so it can execute in parallel with Phases
 | 2. Collection Engine | 0/3 | Planned | - |
 | 3. Summarization Pipeline | 1/2 | In Progress|  |
 | 4. Bot Interface & Source Management | 4/4 | Complete   | 2026-03-27 |
-| 5. Briefing Delivery & Scheduling | 0/2 | Planned | - |
+| 5. Briefing Delivery & Scheduling | 2/2 | Complete   | 2026-03-27 |
 | 6. Production Deployment | 0/1 | Planned | - |
