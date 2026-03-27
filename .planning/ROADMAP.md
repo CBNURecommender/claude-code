@@ -51,7 +51,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Source type auto-detector and keyword filter with unit tests
 - [x] 02-02-PLAN.md — RSS parser, HTML parser, and collection orchestrator
-- [ ] 02-03-PLAN.md — Wire scheduled collection and /collect command into main.py
+- [x] 02-03-PLAN.md — Wire scheduled collection and /collect command into main.py
 
 ### Phase 3: Summarization Pipeline
 **Goal**: Collected articles are summarized into Korean one-line briefings using Claude API and stored as .md files
