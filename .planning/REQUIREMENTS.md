@@ -42,7 +42,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SUM-01**: System generates one-line summaries using Claude API in [핵심키워드] format
 - [x] **SUM-02**: All summaries are in Korean regardless of source article language
 - [x] **SUM-03**: Articles are batched into a single Claude API call per briefing cycle
-- [ ] **SUM-04**: Once an article is summarized, it is marked is_briefed=1 and excluded from future briefings
+- [x] **SUM-04**: Once an article is summarized, it is marked is_briefed=1 and excluded from future briefings
 - [x] **SUM-05**: System falls back to raw article title list if Claude API fails after 3 retries
 
 ### Briefing Delivery (DLV)
@@ -57,8 +57,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Briefing Storage (STR)
 
-- [ ] **STR-01**: Each briefing is saved as a .md file in briefings/ folder with YYYY-MM-DD_HH-MM.md naming
-- [ ] **STR-02**: Briefing history is recorded in the briefings DB table (generated_at, article_count, file_path, delivered status)
+- [x] **STR-01**: Each briefing is saved as a .md file in briefings/ folder with YYYY-MM-DD_HH-MM.md naming
+- [x] **STR-02**: Briefing history is recorded in the briefings DB table (generated_at, article_count, file_path, delivered status)
 
 ### Bot Interface (BOT)
 
@@ -148,7 +148,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SUM-01 | Phase 3 | Complete |
 | SUM-02 | Phase 3 | Complete |
 | SUM-03 | Phase 3 | Complete |
-| SUM-04 | Phase 3 | Pending |
+| SUM-04 | Phase 3 | Complete |
 | SUM-05 | Phase 3 | Complete |
 | DLV-01 | Phase 5 | Pending |
 | DLV-02 | Phase 5 | Pending |
@@ -157,8 +157,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DLV-05 | Phase 5 | Pending |
 | DLV-06 | Phase 5 | Pending |
 | DLV-07 | Phase 5 | Pending |
-| STR-01 | Phase 3 | Pending |
-| STR-02 | Phase 3 | Pending |
+| STR-01 | Phase 3 | Complete |
+| STR-02 | Phase 3 | Complete |
 | BOT-01 | Phase 4 | Pending |
 | BOT-02 | Phase 4 | Pending |
 | BOT-03 | Phase 4 | Pending |
