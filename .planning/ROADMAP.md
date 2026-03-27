@@ -49,7 +49,7 @@ Plans:
   5. A single source failure (timeout, parse error) is logged and skipped without blocking other sources in the same collection cycle
 **Plans:** 3 plans
 Plans:
-- [ ] 02-01-PLAN.md — Source type auto-detector and keyword filter with unit tests
+- [x] 02-01-PLAN.md — Source type auto-detector and keyword filter with unit tests
 - [ ] 02-02-PLAN.md — RSS parser, HTML parser, and collection orchestrator
 - [ ] 02-03-PLAN.md — Wire scheduled collection and /collect command into main.py
 

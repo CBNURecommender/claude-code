@@ -13,7 +13,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **SRC-02**: User can remove a news source via Telegram bot command (with deletion confirmation)
 - [ ] **SRC-03**: User can list all registered sources with their status, URLs, and keyword counts
 - [ ] **SRC-04**: User can enable/disable a source without deleting it or its keywords
-- [ ] **SRC-05**: System auto-detects source type (RSS vs HTML) when a source is added
+- [x] **SRC-05**: System auto-detects source type (RSS vs HTML) when a source is added
 
 ### Keyword Filtering (KWD)
 
@@ -22,9 +22,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **KWD-03**: User can list keywords for a specific source
 - [ ] **KWD-04**: User can clear all keywords for a source (switches to collect-all mode)
 - [ ] **KWD-05**: User can add/remove/list global keywords that apply across all sources
-- [ ] **KWD-06**: Keyword matching is case-insensitive and partial substring match on article titles
-- [ ] **KWD-07**: Source with 0 keywords collects all articles; source with 1+ keywords filters by OR match
-- [ ] **KWD-08**: Global keywords combine with source keywords via OR condition
+- [x] **KWD-06**: Keyword matching is case-insensitive and partial substring match on article titles
+- [x] **KWD-07**: Source with 0 keywords collects all articles; source with 1+ keywords filters by OR match
+- [x] **KWD-08**: Global keywords combine with source keywords via OR condition
 
 ### Collection (COL)
 
@@ -128,15 +128,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SRC-02 | Phase 4 | Pending |
 | SRC-03 | Phase 4 | Pending |
 | SRC-04 | Phase 4 | Pending |
-| SRC-05 | Phase 2 | Pending |
+| SRC-05 | Phase 2 | Complete |
 | KWD-01 | Phase 4 | Pending |
 | KWD-02 | Phase 4 | Pending |
 | KWD-03 | Phase 4 | Pending |
 | KWD-04 | Phase 4 | Pending |
 | KWD-05 | Phase 4 | Pending |
-| KWD-06 | Phase 2 | Pending |
-| KWD-07 | Phase 2 | Pending |
-| KWD-08 | Phase 2 | Pending |
+| KWD-06 | Phase 2 | Complete |
+| KWD-07 | Phase 2 | Complete |
+| KWD-08 | Phase 2 | Complete |
 | COL-01 | Phase 2 | Pending |
 | COL-02 | Phase 2 | Pending |
 | COL-03 | Phase 2 | Pending |
