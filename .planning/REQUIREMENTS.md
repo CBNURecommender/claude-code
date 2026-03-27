@@ -9,19 +9,19 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Source Management (SRC)
 
-- [ ] **SRC-01**: User can add a news source with name and URL via Telegram bot command
-- [ ] **SRC-02**: User can remove a news source via Telegram bot command (with deletion confirmation)
-- [ ] **SRC-03**: User can list all registered sources with their status, URLs, and keyword counts
-- [ ] **SRC-04**: User can enable/disable a source without deleting it or its keywords
+- [x] **SRC-01**: User can add a news source with name and URL via Telegram bot command
+- [x] **SRC-02**: User can remove a news source via Telegram bot command (with deletion confirmation)
+- [x] **SRC-03**: User can list all registered sources with their status, URLs, and keyword counts
+- [x] **SRC-04**: User can enable/disable a source without deleting it or its keywords
 - [x] **SRC-05**: System auto-detects source type (RSS vs HTML) when a source is added
 
 ### Keyword Filtering (KWD)
 
-- [ ] **KWD-01**: User can add per-source filter keywords via Telegram bot command
-- [ ] **KWD-02**: User can remove per-source filter keywords via Telegram bot command
-- [ ] **KWD-03**: User can list keywords for a specific source
-- [ ] **KWD-04**: User can clear all keywords for a source (switches to collect-all mode)
-- [ ] **KWD-05**: User can add/remove/list global keywords that apply across all sources
+- [x] **KWD-01**: User can add per-source filter keywords via Telegram bot command
+- [x] **KWD-02**: User can remove per-source filter keywords via Telegram bot command
+- [x] **KWD-03**: User can list keywords for a specific source
+- [x] **KWD-04**: User can clear all keywords for a source (switches to collect-all mode)
+- [x] **KWD-05**: User can add/remove/list global keywords that apply across all sources
 - [x] **KWD-06**: Keyword matching is case-insensitive and partial substring match on article titles
 - [x] **KWD-07**: Source with 0 keywords collects all articles; source with 1+ keywords filters by OR match
 - [x] **KWD-08**: Global keywords combine with source keywords via OR condition
@@ -66,7 +66,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **BOT-02**: /status command shows source count, pending article count, last/next briefing times
 - [ ] **BOT-03**: /list_times command shows current briefing schedule
 - [ ] **BOT-04**: All bot commands provide clear success/error feedback messages in Korean
-- [ ] **BOT-05**: Bot automatically captures chat_id on first message from a user
+- [x] **BOT-05**: Bot automatically captures chat_id on first message from a user
 
 ### Infrastructure (INF)
 
@@ -124,16 +124,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SRC-01 | Phase 4 | Pending |
-| SRC-02 | Phase 4 | Pending |
-| SRC-03 | Phase 4 | Pending |
-| SRC-04 | Phase 4 | Pending |
+| SRC-01 | Phase 4 | Complete |
+| SRC-02 | Phase 4 | Complete |
+| SRC-03 | Phase 4 | Complete |
+| SRC-04 | Phase 4 | Complete |
 | SRC-05 | Phase 2 | Complete |
-| KWD-01 | Phase 4 | Pending |
-| KWD-02 | Phase 4 | Pending |
-| KWD-03 | Phase 4 | Pending |
-| KWD-04 | Phase 4 | Pending |
-| KWD-05 | Phase 4 | Pending |
+| KWD-01 | Phase 4 | Complete |
+| KWD-02 | Phase 4 | Complete |
+| KWD-03 | Phase 4 | Complete |
+| KWD-04 | Phase 4 | Complete |
+| KWD-05 | Phase 4 | Complete |
 | KWD-06 | Phase 2 | Complete |
 | KWD-07 | Phase 2 | Complete |
 | KWD-08 | Phase 2 | Complete |
@@ -163,7 +163,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BOT-02 | Phase 4 | Pending |
 | BOT-03 | Phase 4 | Pending |
 | BOT-04 | Phase 4 | Pending |
-| BOT-05 | Phase 4 | Pending |
+| BOT-05 | Phase 4 | Complete |
 | INF-01 | Phase 1 | Complete |
 | INF-02 | Phase 1 | Complete |
 | INF-03 | Phase 1 | Complete |
