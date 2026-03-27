@@ -78,8 +78,8 @@ Plans:
 **Plans:** 1/2 plans executed
 Plans:
 - [x] 04-01-PLAN.md — DB query layer for sources, keywords, chat_ids, and counts
-- [ ] 04-02-PLAN.md — Source management commands (add, remove with confirm, list, enable, disable)
-- [ ] 04-03-PLAN.md — Keyword management commands (per-source and global)
+- [x] 04-02-PLAN.md — Source management commands (add, remove with confirm, list, enable, disable)
+- [x] 04-03-PLAN.md — Keyword management commands (per-source and global)
 - [ ] 04-04-PLAN.md — System commands (/help, /status, /list_times), chat_id auto-capture, handler wiring in main.py
 
 ### Phase 5: Briefing Delivery & Scheduling
