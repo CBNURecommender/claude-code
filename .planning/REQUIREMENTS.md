@@ -51,9 +51,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DLV-02**: User can set multiple briefing times via /set_times command
 - [ ] **DLV-03**: Briefing time changes take effect immediately without restart
 - [ ] **DLV-04**: User can trigger immediate briefing via /briefing command
-- [ ] **DLV-05**: Messages exceeding 4096 characters are split across multiple Telegram messages
-- [ ] **DLV-06**: When no new articles exist at briefing time, a simple notification is sent (no .md file)
-- [ ] **DLV-07**: Briefing is delivered to all registered team members (multiple chat_ids, shared settings)
+- [x] **DLV-05**: Messages exceeding 4096 characters are split across multiple Telegram messages
+- [x] **DLV-06**: When no new articles exist at briefing time, a simple notification is sent (no .md file)
+- [x] **DLV-07**: Briefing is delivered to all registered team members (multiple chat_ids, shared settings)
 
 ### Briefing Storage (STR)
 
@@ -154,9 +154,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DLV-02 | Phase 5 | Pending |
 | DLV-03 | Phase 5 | Pending |
 | DLV-04 | Phase 5 | Pending |
-| DLV-05 | Phase 5 | Pending |
-| DLV-06 | Phase 5 | Pending |
-| DLV-07 | Phase 5 | Pending |
+| DLV-05 | Phase 5 | Complete |
+| DLV-06 | Phase 5 | Complete |
+| DLV-07 | Phase 5 | Complete |
 | STR-01 | Phase 3 | Complete |
 | STR-02 | Phase 3 | Complete |
 | BOT-01 | Phase 4 | Complete |

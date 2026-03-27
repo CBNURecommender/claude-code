@@ -94,7 +94,7 @@ Plans:
   5. When no new articles exist at briefing time, a simple "no new articles" notification is sent (no .md file created)
 **Plans:** 2 plans
 Plans:
-- [ ] 05-01-PLAN.md — Telegram delivery service with message splitting and multi-user delivery
+- [x] 05-01-PLAN.md — Telegram delivery service with message splitting and multi-user delivery
 - [ ] 05-02-PLAN.md — JobQueue scheduling, /set_times /briefing /collect handlers, main.py wiring
 
 ### Phase 6: Production Deployment
