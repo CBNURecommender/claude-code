@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 Plans:
 - [x] 01-01-PLAN.md — Project scaffolding, config loader, structured logging
-- [ ] 01-02-PLAN.md — Async SQLite database with 6 tables and 13 initial sources
+- [x] 01-02-PLAN.md — Async SQLite database with 6 tables and 13 initial sources
 - [ ] 01-03-PLAN.md — Async main.py entry point wiring bot + DB + logging
 
 ### Phase 2: Collection Engine
