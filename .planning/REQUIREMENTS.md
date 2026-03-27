@@ -28,14 +28,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Collection (COL)
 
-- [ ] **COL-01**: System collects articles from RSS sources using feedparser
-- [ ] **COL-02**: System collects articles from HTML sources using requests + BeautifulSoup4 generic parser
-- [ ] **COL-03**: System only parses the exact registered URL (not the site homepage)
-- [ ] **COL-04**: System prevents duplicate articles via URL-based deduplication
+- [x] **COL-01**: System collects articles from RSS sources using feedparser
+- [x] **COL-02**: System collects articles from HTML sources using requests + BeautifulSoup4 generic parser
+- [x] **COL-03**: System only parses the exact registered URL (not the site homepage)
+- [x] **COL-04**: System prevents duplicate articles via URL-based deduplication
 - [ ] **COL-05**: System runs collection automatically at configurable intervals (default 30 min)
 - [ ] **COL-06**: User can trigger immediate collection via /collect command
-- [ ] **COL-07**: Individual source failure does not block other sources (log and skip)
-- [ ] **COL-08**: System stores matched keywords as JSON for each collected article
+- [x] **COL-07**: Individual source failure does not block other sources (log and skip)
+- [x] **COL-08**: System stores matched keywords as JSON for each collected article
 
 ### Summarization (SUM)
 
@@ -137,14 +137,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | KWD-06 | Phase 2 | Complete |
 | KWD-07 | Phase 2 | Complete |
 | KWD-08 | Phase 2 | Complete |
-| COL-01 | Phase 2 | Pending |
-| COL-02 | Phase 2 | Pending |
-| COL-03 | Phase 2 | Pending |
-| COL-04 | Phase 2 | Pending |
+| COL-01 | Phase 2 | Complete |
+| COL-02 | Phase 2 | Complete |
+| COL-03 | Phase 2 | Complete |
+| COL-04 | Phase 2 | Complete |
 | COL-05 | Phase 2 | Pending |
 | COL-06 | Phase 2 | Pending |
-| COL-07 | Phase 2 | Pending |
-| COL-08 | Phase 2 | Pending |
+| COL-07 | Phase 2 | Complete |
+| COL-08 | Phase 2 | Complete |
 | SUM-01 | Phase 3 | Pending |
 | SUM-02 | Phase 3 | Pending |
 | SUM-03 | Phase 3 | Pending |

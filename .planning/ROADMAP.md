@@ -50,7 +50,7 @@ Plans:
 **Plans:** 3 plans
 Plans:
 - [x] 02-01-PLAN.md — Source type auto-detector and keyword filter with unit tests
-- [ ] 02-02-PLAN.md — RSS parser, HTML parser, and collection orchestrator
+- [x] 02-02-PLAN.md — RSS parser, HTML parser, and collection orchestrator
 - [ ] 02-03-PLAN.md — Wire scheduled collection and /collect command into main.py
 
 ### Phase 3: Summarization Pipeline
