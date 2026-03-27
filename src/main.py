@@ -9,6 +9,9 @@ from __future__ import annotations
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
+from src.bot.keyword_handlers import register_keyword_handlers
+from src.bot.source_handlers import register_source_handlers
+from src.bot.system_handlers import register_system_handlers
 from src.collector import collect_all_sources
 from src.storage.database import close_db, get_setting, init_db
 from src.utils.config import load_config
@@ -95,6 +98,12 @@ def main() -> None:
 
     # Command handlers
     app.add_handler(CommandHandler("collect", cmd_collect))
+
+    # Register bot command handlers
+    register_source_handlers(app)
+    register_keyword_handlers(app)
+    register_system_handlers(app)
+    logger.info("Bot command handlers registered")
 
     logger.info("Starting polling...")
     app.run_polling(drop_pending_updates=True)
