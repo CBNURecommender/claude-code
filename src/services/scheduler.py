@@ -18,6 +18,8 @@ from telegram.ext import Application, ContextTypes
 from src.delivery.telegram_sender import (
     deliver_briefing,
     format_briefing_message,
+    send_realtime_links,
+    send_realtime_summaries,
     send_to_all_users,
 )
 from src.storage.database import get_setting, set_setting
@@ -76,6 +78,31 @@ async def job_collect(context: ContextTypes.DEFAULT_TYPE) -> None:
         logger.error(f"Scheduled collection failed: {e}")
 
 
+async def job_realtime_collect(context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Scheduled realtime collection: collect and send link alerts every 5 minutes."""
+    try:
+        from src.collector import collect_all_sources
+
+        result = await collect_all_sources()
+        new_articles = result.get("new_articles_list", [])
+
+        if not new_articles:
+            return
+
+        # Check if realtime alerts are enabled
+        enabled = await get_setting("realtime_enabled")
+        if enabled != "1":
+            logger.debug("Realtime alerts disabled, skipping send")
+            return
+
+        await send_realtime_links(context.bot, new_articles)
+        # Follow up with content summaries
+        await send_realtime_summaries(context.bot, new_articles)
+
+    except Exception as e:
+        logger.error(f"Realtime collection failed: {e}")
+
+
 # ---------------------------------------------------------------------------
 # Schedule management
 # ---------------------------------------------------------------------------
@@ -126,6 +153,15 @@ async def setup_scheduled_jobs(application: Application) -> None:
         name="collector",
     )
     logger.info("Scheduled collection every %d minutes", interval)
+
+    # Realtime collection job (5-minute interval)
+    job_queue.run_repeating(
+        job_realtime_collect,
+        interval=5 * 60,
+        first=30,
+        name="realtime_collector",
+    )
+    logger.info("Scheduled realtime collection every 5 minutes")
 
     # Briefing schedule
     await update_briefing_schedule(application)

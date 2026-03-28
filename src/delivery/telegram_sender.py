@@ -9,10 +9,11 @@ from __future__ import annotations
 
 import json
 
+import httpx
 import telegram
 from telegram.error import TelegramError
 
-from src.storage.database import get_setting
+from src.storage.database import get_db, get_setting
 from src.utils.logger import get_logger
 
 logger = get_logger("delivery.telegram_sender")
@@ -156,4 +157,115 @@ async def deliver_briefing(
 
     count = await send_to_all_users(bot, briefing_content)
     logger.info(f"Briefing delivered to {count} users ({article_count} articles)")
+    return count
+
+
+# ---------------------------------------------------------------------------
+# Realtime link alerts
+# ---------------------------------------------------------------------------
+def format_realtime_message(articles: list[dict]) -> str:
+    """Format a list of new articles into the realtime alert message."""
+    lines = ["\U0001f514 새 기사 알림", "\u2501" * 20, ""]
+    for a in articles:
+        lines.append(f"[{a['source_name']}] {a['title']}")
+        lines.append(a["url"])
+        lines.append("")
+    lines.append("\u2501" * 20)
+    lines.append(f"총 {len(articles)}건")
+    return "\n".join(lines)
+
+
+async def send_realtime_links(bot: telegram.Bot, articles: list[dict]) -> int:
+    """Send realtime link alerts for new articles and mark them as sent.
+
+    Args:
+        bot: Telegram Bot instance.
+        articles: List of dicts with keys: title, url, source_name.
+
+    Returns:
+        Number of users successfully delivered to.
+    """
+    if not articles:
+        return 0
+
+    msg = format_realtime_message(articles)
+    count = await send_to_all_users(bot, msg)
+
+    # Mark articles as realtime-sent in DB
+    db = await get_db()
+    urls = [a["url"] for a in articles]
+    placeholders = ",".join("?" for _ in urls)
+    await db.execute(
+        f"UPDATE articles SET is_realtime_sent = 1 WHERE url IN ({placeholders})",
+        urls,
+    )
+    await db.commit()
+
+    logger.info(f"Realtime alerts sent to {count} users ({len(articles)} articles)")
+    return count
+
+
+# ---------------------------------------------------------------------------
+# Realtime content summary (fetch + AI summarize)
+# ---------------------------------------------------------------------------
+async def _fetch_article_text(url: str) -> str | None:
+    """Fetch article page and extract text content (first ~2000 chars)."""
+    try:
+        async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
+            resp = await client.get(url, headers={
+                "User-Agent": "Mozilla/5.0 (compatible; NewsBriefingBot/1.0)"
+            })
+            resp.raise_for_status()
+
+        from bs4 import BeautifulSoup
+
+        soup = BeautifulSoup(resp.text, "lxml")
+        # Remove script/style
+        for tag in soup(["script", "style", "nav", "header", "footer"]):
+            tag.decompose()
+
+        text = soup.get_text(separator="\n", strip=True)
+        # Truncate to ~2000 chars to keep API costs low
+        return text[:2000] if text else None
+    except Exception as exc:
+        logger.debug(f"Failed to fetch article text from {url}: {exc}")
+        return None
+
+
+async def send_realtime_summaries(bot: telegram.Bot, articles: list[dict]) -> int:
+    """Fetch article content, summarize in Korean, and send to users.
+
+    Sent as a follow-up message after the link alert.
+    """
+    if not articles:
+        return 0
+
+    from src.summarizer.briefing import summarize_text
+
+    summary_lines: list[str] = []
+
+    for a in articles:
+        content = await _fetch_article_text(a["url"])
+        if content:
+            summary = await summarize_text(content)
+            if summary:
+                summary_lines.append(f"[{a['source_name']}] {a['title']}")
+                summary_lines.append(summary)
+                summary_lines.append("")
+                continue
+
+        # Fallback: title only
+        summary_lines.append(f"[{a['source_name']}] {a['title']}")
+        summary_lines.append("(본문 요약 불가)")
+        summary_lines.append("")
+
+    if not summary_lines:
+        return 0
+
+    header = "\U0001f4dd 기사 내용 요약\n" + "\u2501" * 20 + "\n"
+    footer = "\u2501" * 20
+    msg = header + "\n".join(summary_lines) + footer
+
+    count = await send_to_all_users(bot, msg)
+    logger.info(f"Realtime summaries sent to {count} users ({len(articles)} articles)")
     return count

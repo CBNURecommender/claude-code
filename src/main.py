@@ -10,6 +10,7 @@ from telegram.ext import Application
 
 from src.bot.delivery_handlers import register_delivery_handlers
 from src.bot.keyword_handlers import register_keyword_handlers
+from src.bot.realtime_handlers import register_realtime_handlers
 from src.bot.source_handlers import register_source_handlers
 from src.bot.system_handlers import register_system_handlers
 from src.services.scheduler import setup_scheduled_jobs
@@ -48,6 +49,9 @@ def main() -> None:
     app = (
         Application.builder()
         .token(config.telegram_bot_token)
+        .connect_timeout(30.0)
+        .read_timeout(30.0)
+        .write_timeout(30.0)
         .post_init(post_init)
         .post_shutdown(post_shutdown)
         .build()
@@ -57,6 +61,7 @@ def main() -> None:
     register_delivery_handlers(app)
     register_source_handlers(app)
     register_keyword_handlers(app)
+    register_realtime_handlers(app)
     register_system_handlers(app)
     logger.info("Bot command handlers registered")
 

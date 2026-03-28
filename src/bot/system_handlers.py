@@ -43,34 +43,81 @@ async def auto_register_chat_id(
 # /help (and /start) command (BOT-01)
 # ---------------------------------------------------------------------------
 HELP_TEXT = """\
-사용 가능한 명령어
+뉴스 브리핑 봇 사용 가이드
 
 === 소스 관리 ===
-/add_source <이름> <URL> - 뉴스 소스 추가
-/remove_source <이름> - 뉴스 소스 삭제
-/list_sources - 등록된 소스 목록 조회
-/enable_source <이름> - 소스 활성화
-/disable_source <이름> - 소스 비활성화
+/add_source <이름> <URL>
+  뉴스 소스를 추가합니다
+  예) /add_source 테크크런치 https://techcrunch.com/feed/
+
+/remove_source <이름>
+  소스를 삭제합니다 (확인 질문 후 삭제)
+  예) /remove_source 테크크런치
+
+/list_sources
+  등록된 전체 소스 목록을 조회합니다
+
+/enable_source <이름>
+  비활성화된 소스를 다시 켭니다
+  예) /enable_source SemiAnalysis
+
+/disable_source <이름>
+  소스 수집을 중지합니다 (삭제 아님)
+  예) /disable_source Omdia
 
 === 소스별 필터 키워드 ===
-/add_keyword <소스이름> <키워드> - 필터 키워드 추가
-/remove_keyword <소스이름> <키워드> - 필터 키워드 삭제
-/list_keywords <소스이름> - 키워드 목록 조회
-/clear_keywords <소스이름> - 모든 키워드 삭제
+해당 소스에서 키워드가 포함된 기사만 수집합니다.
+키워드가 없으면 모든 기사를 수집합니다.
+
+/add_keyword <소스> <키워드>
+  예) /add_keyword CNBC Technology semiconductor
+
+/remove_keyword <소스> <키워드>
+  예) /remove_keyword CNBC Technology semiconductor
+
+/list_keywords <소스>
+  예) /list_keywords CNBC Technology
+
+/clear_keywords <소스>
+  해당 소스의 키워드를 모두 삭제합니다
 
 === 전체 공통 키워드 ===
-/add_global <키워드> - 전체 공통 키워드 추가
-/remove_global <키워드> - 전체 공통 키워드 삭제
-/list_globals - 전체 공통 키워드 조회
+모든 소스에 공통 적용됩니다.
+소스별 키워드 + 공통 키워드 중 하나라도 매칭되면 수집합니다.
+
+/add_global <키워드>
+  예) /add_global 반도체
+  예) /add_global AI
+
+/remove_global <키워드>
+  예) /remove_global 반도체
+
+/list_globals
+  등록된 공통 키워드 목록을 조회합니다
 
 === 브리핑 시간 ===
-/set_times <HH:MM> [HH:MM] ... - 브리핑 시간 설정
-/list_times - 현재 브리핑 시간 조회
+/set_times <HH:MM> [HH:MM] ...
+  브리핑 발송 시간을 설정합니다 (KST)
+  예) /set_times 09:00 18:00
+  예) /set_times 08:00 13:00 19:00
+
+/list_times
+  현재 설정된 브리핑 시간을 조회합니다
 
 === 즉시 실행 ===
-/collect - 지금 즉시 전체 수집
-/briefing - 지금 즉시 브리핑 생성
-/status - 현재 상태 조회
+/collect  - 전체 소스에서 지금 즉시 수집
+/briefing - 미브리핑 기사를 요약하여 전송
+/status   - 소스 수, 미브리핑 기사 수, 시간 조회
+
+=== 실시간 알림 ===
+/realtime_on     - 실시간 새 기사 링크 알림 + 내용 요약 켜기
+/realtime_off    - 실시간 알림 끄기
+/realtime_status - 실시간 알림 상태 확인
+
+=== AI 설정 ===
+/set_provider <anthropic|gemini>
+  요약에 사용할 AI를 변경합니다
+  예) /set_provider gemini
 
 === 도움말 ===
 /help - 이 도움말 표시"""
@@ -93,12 +140,16 @@ async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     times: list[str] = json.loads(raw_times) if raw_times else []
     times_display = ", ".join(times) if times else "미설정"
 
+    realtime_enabled = await get_setting("realtime_enabled")
+    realtime_status = "ON" if realtime_enabled == "1" else "OFF"
+
     text = (
         f"시스템 상태\n"
         f"\n"
         f"소스: {active}개 활성 / {disabled}개 비활성\n"
         f"미브리핑 기사: {pending}건\n"
-        f"브리핑 시간: {times_display} KST"
+        f"브리핑 시간: {times_display} KST\n"
+        f"실시간 알림: {realtime_status} (5분 주기)"
     )
     await update.message.reply_text(text)
 

@@ -106,6 +106,26 @@ IT/반도체/AI 뉴스 소스에서 기사를 자동 수집하고, 소스별 키
 Conventions not yet established. Will populate as patterns emerge during development.
 <!-- GSD:conventions-end -->
 
+## Server & Deployment
+
+### GCP 인스턴스 (34.172.56.22)
+- **OS**: Ubuntu 24.04 LTS, Python 3.12.3
+- **SSH**: `ssh -i ~/.ssh/gcp_rsa_34_172_56_22 awsmi@34.172.56.22`
+- **배포 경로**: `/home/awsmi/news-briefing/`
+- **서비스**: `news-briefing.service` (systemd, enabled, auto-restart)
+- **배포 방법**: `scp -i ~/.ssh/gcp_rsa_34_172_56_22 -r src/ requirements.txt awsmi@34.172.56.22:~/news-briefing/` 후 `sudo systemctl restart news-briefing`
+- **로그**: `~/news-briefing/logs/service.log`, `~/news-briefing/logs/service-error.log`
+
+### 동일 서버 내 다른 봇 (충돌 금지)
+- **dart-noti-bot**: DART 공시 알림 텔레그램 봇
+  - 경로: `/opt/dart-noti-bot/`
+  - 서비스: `dart-noti-bot.service` (User=awsmisojg)
+  - 토큰: `8768...` (news-briefing 토큰 `8637...`과 다름)
+- **절대 dart-noti-bot 서비스를 중지/재시작/수정해서는 안 됨**
+- **배포 시 news-briefing 서비스만 restart할 것** (`sudo systemctl restart news-briefing`)
+- 두 봇은 서로 다른 Telegram Bot Token을 사용하므로 polling 충돌 없음
+- news-briefing 봇은 로컬과 서버에서 동시에 실행하면 안 됨 (같은 토큰으로 polling 충돌)
+
 <!-- GSD:architecture-start source:ARCHITECTURE.md -->
 ## Architecture
 

@@ -25,14 +25,14 @@ from src.utils.logger import get_logger
 logger = get_logger("collector")
 
 
-async def collect_source(source: dict) -> int:
+async def collect_source(source: dict) -> list[dict]:
     """Collect articles from a single source.
 
     Args:
         source: Source row dict with keys: id, name, url, type, enabled.
 
     Returns:
-        Number of new articles stored.
+        List of newly stored articles (each with title, url, source_name).
     """
     source_id = source["id"]
     source_name = source["name"]
@@ -59,7 +59,7 @@ async def collect_source(source: dict) -> int:
 
     if not raw_articles:
         logger.info("No articles found for source '%s'", source_name)
-        return 0
+        return []
 
     # Step 3: Load keywords from DB
     db = await get_db()
@@ -84,10 +84,11 @@ async def collect_source(source: dict) -> int:
             source_name,
             len(raw_articles),
         )
-        return 0
+        return []
 
     # Step 5: Store new articles with deduplication (per COL-04)
     new_count = 0
+    new_articles: list[dict] = []
     for article in filtered_articles:
         matched_kw_json = json.dumps(
             article.get("matched_keywords", []), ensure_ascii=False
@@ -110,6 +111,11 @@ async def collect_source(source: dict) -> int:
             # rowcount > 0 means the row was actually inserted (not ignored as duplicate)
             if cursor.rowcount > 0:
                 new_count += 1
+                new_articles.append({
+                    "title": article["title"],
+                    "url": article["url"],
+                    "source_name": source_name,
+                })
         except Exception as exc:
             logger.warning(
                 "Failed to insert article '%s': %s", article["url"], exc
@@ -123,7 +129,7 @@ async def collect_source(source: dict) -> int:
         len(filtered_articles),
         new_count,
     )
-    return new_count
+    return new_articles
 
 
 async def collect_all_sources() -> dict:
@@ -135,6 +141,7 @@ async def collect_all_sources() -> dict:
             'successful': int,
             'failed': int,
             'new_articles': int,
+            'new_articles_list': list[dict],
             'errors': list[str],
         }
     """
@@ -152,6 +159,7 @@ async def collect_all_sources() -> dict:
             "successful": 0,
             "failed": 0,
             "new_articles": 0,
+            "new_articles_list": [],
             "errors": [],
         }
 
@@ -161,11 +169,13 @@ async def collect_all_sources() -> dict:
     successful = 0
     failed = 0
     errors: list[str] = []
+    all_new_articles: list[dict] = []
 
     for source in sources:
         try:
-            new_count = await collect_source(source)
-            total_new += new_count
+            new_articles = await collect_source(source)
+            total_new += len(new_articles)
+            all_new_articles.extend(new_articles)
             successful += 1
         except Exception as exc:
             # Per COL-07: log and skip, do not block other sources
@@ -187,5 +197,6 @@ async def collect_all_sources() -> dict:
         "successful": successful,
         "failed": failed,
         "new_articles": total_new,
+        "new_articles_list": all_new_articles,
         "errors": errors,
     }

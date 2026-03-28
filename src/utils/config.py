@@ -18,6 +18,7 @@ BRIEFINGS_DIR = PROJECT_ROOT / "briefings"
 class Config:
     anthropic_api_key: str
     telegram_bot_token: str
+    google_api_key: str
 
 
 def load_config() -> Config:
@@ -25,19 +26,25 @@ def load_config() -> Config:
 
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     bot_token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+    google_key = os.environ.get("GOOGLE_API_KEY", "").strip()
 
-    missing = []
-    if not api_key:
-        missing.append("ANTHROPIC_API_KEY")
     if not bot_token:
-        missing.append("TELEGRAM_BOT_TOKEN")
-
-    if missing:
         print(
-            f"FATAL: Missing required environment variable(s): {', '.join(missing)}. "
-            f"Set them in .env file at {PROJECT_ROOT / '.env'}",
+            f"FATAL: Missing required environment variable: TELEGRAM_BOT_TOKEN. "
+            f"Set it in .env file at {PROJECT_ROOT / '.env'}",
             file=sys.stderr,
         )
         raise SystemExit(1)
 
-    return Config(anthropic_api_key=api_key, telegram_bot_token=bot_token)
+    if not api_key and not google_key:
+        print(
+            "WARNING: Neither ANTHROPIC_API_KEY nor GOOGLE_API_KEY is set. "
+            "Summarization will use fallback (titles only).",
+            file=sys.stderr,
+        )
+
+    return Config(
+        anthropic_api_key=api_key,
+        telegram_bot_token=bot_token,
+        google_api_key=google_key,
+    )

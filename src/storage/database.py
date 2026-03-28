@@ -58,12 +58,14 @@ CREATE TABLE IF NOT EXISTS articles (
     collected_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
     matched_keywords TEXT,
     is_briefed      BOOLEAN DEFAULT 0,
+    is_realtime_sent BOOLEAN DEFAULT 0,
     briefing_id     INTEGER,
     FOREIGN KEY (source_id) REFERENCES sources(id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_articles_briefed ON articles(is_briefed);
 CREATE INDEX IF NOT EXISTS idx_articles_source ON articles(source_id);
+CREATE INDEX IF NOT EXISTS idx_articles_realtime ON articles(is_realtime_sent);
 
 CREATE TABLE IF NOT EXISTS briefings (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,6 +93,8 @@ _DEFAULT_SETTINGS = [
     ("collection_interval_minutes", "30"),
     ("summary_language", "ko"),
     ("telegram_chat_ids", "[]"),
+    ("realtime_enabled", "1"),
+    ("summary_provider", "gemini"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -151,6 +155,15 @@ async def init_db() -> None:
 
     # Create all tables
     await db.executescript(_SCHEMA_SQL)
+
+    # Migration: add is_realtime_sent column if missing (existing DB compat)
+    async with db.execute("PRAGMA table_info(articles)") as cursor:
+        columns = {row[1] for row in await cursor.fetchall()}
+    if "is_realtime_sent" not in columns:
+        await db.execute(
+            "ALTER TABLE articles ADD COLUMN is_realtime_sent BOOLEAN DEFAULT 0"
+        )
+        logger.info("Migration: added is_realtime_sent column to articles")
 
     # Insert default settings (idempotent)
     for key, value in _DEFAULT_SETTINGS:
