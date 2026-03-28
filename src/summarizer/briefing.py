@@ -1,7 +1,6 @@
-"""AI summarization module with Vertex AI, Gemini API, and Anthropic support.
+"""AI summarization module with Gemini API and Vertex AI fallback.
 
-Provider priority: vertex -> gemini -> anthropic -> fallback.
-Vertex AI uses GCP instance service account (no API key needed).
+Provider priority: Gemini API (free tier) -> Vertex AI (GCP) -> fallback.
 All summaries are forced to Korean output.
 """
 
@@ -12,7 +11,6 @@ from dataclasses import dataclass
 
 import httpx
 
-from src.storage.database import get_setting
 from src.utils.config import load_config
 from src.utils.logger import get_logger
 
@@ -21,15 +19,15 @@ logger = get_logger("summarizer.briefing")
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-ANTHROPIC_MODEL = "claude-sonnet-4-20250514"
-GEMINI_MODEL = "gemini-3.1-flash-lite-preview"
+GEMINI_API_MODEL = "gemini-2.5-flash"  # Gemini API (free tier) - 최신 모델
+VERTEX_MODEL = "gemini-2.5-flash"      # Vertex AI (GCP) - 동일 모델
 VERTEX_PROJECT = "semi-korea-491110"
 VERTEX_LOCATION = "us-central1"
-MAX_RETRIES = 3
-RETRY_DELAY_SECONDS = 10
+MAX_RETRIES = 2
+RETRY_DELAY_SECONDS = 5
 
 # ---------------------------------------------------------------------------
-# System prompt — 한글 출력 강제
+# System prompt -- 한글 출력 강제
 # ---------------------------------------------------------------------------
 SYSTEM_PROMPT = (
     "당신은 IT/반도체 뉴스 요약 전문가입니다.\n"
@@ -71,10 +69,36 @@ def _build_user_prompt(articles: list[ArticleForSummary]) -> str:
 # ---------------------------------------------------------------------------
 def _build_fallback(articles: list[ArticleForSummary]) -> str:
     """Return raw article titles when the API is unavailable."""
-    lines = ["[요약 실패 — 원본 제목 목록]", ""]
+    lines = ["[요약 실패 - 원본 제목 목록]", ""]
     for article in articles:
         lines.append(f"- {article.title} — {article.source_name}")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Gemini API (API key based — free tier)
+# ---------------------------------------------------------------------------
+async def _call_gemini(prompt: str, api_key: str) -> str | None:
+    """Call Gemini API with API key. Returns text or None."""
+    url = (
+        f"https://generativelanguage.googleapis.com/v1beta/"
+        f"models/{GEMINI_API_MODEL}:generateContent?key={api_key}"
+    )
+    payload = {"contents": [{"parts": [{"text": prompt}]}]}
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            async with httpx.AsyncClient(timeout=60) as client:
+                resp = await client.post(url, json=payload)
+                resp.raise_for_status()
+                data = resp.json()
+                return data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        except Exception as exc:
+            logger.warning(f"Gemini API attempt {attempt}/{MAX_RETRIES} failed: {exc}")
+            if attempt < MAX_RETRIES:
+                await asyncio.sleep(RETRY_DELAY_SECONDS)
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -104,9 +128,11 @@ async def _call_vertex(prompt: str) -> str | None:
     url = (
         f"https://{VERTEX_LOCATION}-aiplatform.googleapis.com/v1/"
         f"projects/{VERTEX_PROJECT}/locations/{VERTEX_LOCATION}/"
-        f"publishers/google/models/{GEMINI_MODEL}:generateContent"
+        f"publishers/google/models/{VERTEX_MODEL}:generateContent"
     )
-    payload = {"contents": [{"parts": [{"text": prompt}]}]}
+    payload = {
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+    }
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
@@ -126,80 +152,6 @@ async def _call_vertex(prompt: str) -> str | None:
     return None
 
 
-async def _summarize_vertex(articles: list[ArticleForSummary]) -> str | None:
-    """Summarize articles via Vertex AI Gemini."""
-    user_prompt = _build_user_prompt(articles)
-    full_prompt = f"{SYSTEM_PROMPT}\n\n{user_prompt}"
-    result = await _call_vertex(full_prompt)
-    if result:
-        logger.info(f"Summarized {len(articles)} articles via Vertex AI")
-    return result
-
-
-# ---------------------------------------------------------------------------
-# Anthropic Claude
-# ---------------------------------------------------------------------------
-async def _summarize_anthropic(
-    articles: list[ArticleForSummary], api_key: str
-) -> str | None:
-    """Call Claude API. Returns summary text or None on failure."""
-    import anthropic
-
-    client = anthropic.AsyncAnthropic(api_key=api_key)
-    user_prompt = _build_user_prompt(articles)
-
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            response = await client.messages.create(
-                model=ANTHROPIC_MODEL,
-                max_tokens=4096,
-                system=SYSTEM_PROMPT,
-                messages=[{"role": "user", "content": user_prompt}],
-            )
-            summary = response.content[0].text.strip()
-            logger.info(f"Summarized {len(articles)} articles via Claude API")
-            return summary
-        except Exception as exc:
-            logger.warning(f"Claude API attempt {attempt}/{MAX_RETRIES} failed: {exc}")
-            if attempt < MAX_RETRIES:
-                await asyncio.sleep(RETRY_DELAY_SECONDS)
-
-    return None
-
-
-# ---------------------------------------------------------------------------
-# Google Gemini API (API key based)
-# ---------------------------------------------------------------------------
-async def _summarize_gemini(
-    articles: list[ArticleForSummary], api_key: str
-) -> str | None:
-    """Call Gemini API with API key. Returns summary text or None on failure."""
-    user_prompt = _build_user_prompt(articles)
-    full_prompt = f"{SYSTEM_PROMPT}\n\n{user_prompt}"
-
-    url = (
-        f"https://generativelanguage.googleapis.com/v1beta/"
-        f"models/{GEMINI_MODEL}:generateContent?key={api_key}"
-    )
-    payload = {"contents": [{"parts": [{"text": full_prompt}]}]}
-
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            async with httpx.AsyncClient(timeout=60) as client:
-                resp = await client.post(url, json=payload)
-                resp.raise_for_status()
-                data = resp.json()
-                text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
-                logger.info(f"Summarized {len(articles)} articles via Gemini API")
-                return text
-        except Exception as exc:
-            logger.warning(f"Gemini API attempt {attempt}/{MAX_RETRIES} failed: {exc}")
-            if attempt < MAX_RETRIES:
-                await asyncio.sleep(RETRY_DELAY_SECONDS)
-
-    return None
-
-
 # ---------------------------------------------------------------------------
 # Generic text summarization (for realtime article content)
 # ---------------------------------------------------------------------------
@@ -211,84 +163,53 @@ REALTIME_INSTRUCTION = (
 
 
 async def summarize_text(text: str, instruction: str | None = None) -> str | None:
-    """Summarize arbitrary text. Tries Vertex -> Gemini -> Anthropic."""
+    """Summarize arbitrary text. Tries Gemini API -> Vertex AI."""
     if instruction is None:
         instruction = REALTIME_INSTRUCTION
 
     config = load_config()
     prompt = f"{instruction}\n\n{text}"
 
-    # 1. Vertex AI (best: no quota limit, free on GCP)
+    # 1. Gemini API (free tier)
+    if config.google_api_key:
+        result = await _call_gemini(prompt, config.google_api_key)
+        if result:
+            logger.info("Text summarized via Gemini API")
+            return result
+
+    # 2. Vertex AI (GCP fallback)
     result = await _call_vertex(prompt)
     if result:
         logger.info("Text summarized via Vertex AI")
         return result
 
-    # 2. Gemini API key
-    if config.google_api_key:
-        try:
-            url = (
-                f"https://generativelanguage.googleapis.com/v1beta/"
-                f"models/{GEMINI_MODEL}:generateContent?key={config.google_api_key}"
-            )
-            payload = {"contents": [{"parts": [{"text": prompt}]}]}
-            async with httpx.AsyncClient(timeout=60) as client:
-                resp = await client.post(url, json=payload)
-                resp.raise_for_status()
-                data = resp.json()
-                result = data["candidates"][0]["content"]["parts"][0]["text"].strip()
-                logger.info("Text summarized via Gemini API")
-                return result
-        except Exception as exc:
-            logger.warning(f"Gemini text summarize failed: {exc}")
-
-    # 3. Anthropic
-    if config.anthropic_api_key:
-        import anthropic
-
-        client = anthropic.AsyncAnthropic(api_key=config.anthropic_api_key)
-        try:
-            response = await client.messages.create(
-                model=ANTHROPIC_MODEL,
-                max_tokens=2048,
-                system=instruction,
-                messages=[{"role": "user", "content": text}],
-            )
-            result = response.content[0].text.strip()
-            logger.info("Text summarized via Claude API")
-            return result
-        except Exception as exc:
-            logger.warning(f"Claude text summarize failed: {exc}")
-
     return None
 
 
 # ---------------------------------------------------------------------------
-# Core summarization function (tri-provider with fallback)
+# Core summarization function (Gemini -> Vertex -> fallback)
 # ---------------------------------------------------------------------------
 async def summarize_articles(articles: list[ArticleForSummary]) -> str:
-    """Summarize articles. Tries Vertex -> Gemini -> Anthropic -> fallback."""
+    """Summarize articles. Tries Gemini API -> Vertex AI -> fallback."""
     if not articles:
         return ""
 
     config = load_config()
+    user_prompt = _build_user_prompt(articles)
+    full_prompt = f"{SYSTEM_PROMPT}\n\n{user_prompt}"
 
-    # 1. Vertex AI (always try first — free, no quota issues)
-    result = await _summarize_vertex(articles)
-    if result:
-        return result
-
-    # 2. Gemini API key
+    # 1. Gemini API (free tier)
     if config.google_api_key:
-        result = await _summarize_gemini(articles, config.google_api_key)
+        result = await _call_gemini(full_prompt, config.google_api_key)
         if result:
+            logger.info(f"Summarized {len(articles)} articles via Gemini API")
             return result
 
-    # 3. Anthropic
-    if config.anthropic_api_key:
-        result = await _summarize_anthropic(articles, config.anthropic_api_key)
-        if result:
-            return result
+    # 2. Vertex AI (GCP fallback)
+    result = await _call_vertex(full_prompt)
+    if result:
+        logger.info(f"Summarized {len(articles)} articles via Vertex AI")
+        return result
 
     logger.error("All AI providers failed, using fallback")
     return _build_fallback(articles)

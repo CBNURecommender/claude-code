@@ -70,6 +70,25 @@ _SOURCE_SELECTORS: dict[str, SourceSelector] = {
         container="div.post-list, main, div.content",
         link="a[href*='/p/']",
     ),
+    "asia.nikkei.com": SourceSelector(
+        container="body",
+        link=None,
+        url_pattern=r"nikkei\.com/.+/.+/.+",
+        min_title_length=20,
+    ),
+    "thebell.co.kr": SourceSelector(
+        container="div.newsBox",
+        link="a[href*='newsview']",
+        min_title_length=10,
+    ),
+    "datacenterdynamics.com": SourceSelector(
+        container="main",
+        link="a[href*='/news/']",
+    ),
+    "dealsite.co.kr": SourceSelector(
+        container="main, div.content, body",
+        link="a[href*='/articles/']",
+    ),
 }
 
 

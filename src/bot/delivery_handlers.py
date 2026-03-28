@@ -12,8 +12,8 @@ import re
 from telegram import Update
 from telegram.ext import CommandHandler, ContextTypes
 
-from src.delivery.telegram_sender import send_realtime_links, send_realtime_summaries, send_to_all_users
-from src.services.scheduler import job_briefing, job_collect, update_briefing_schedule
+from src.delivery.telegram_sender import send_realtime_articles, send_to_all_users
+from src.services.scheduler import job_briefing, update_briefing_schedule
 from src.storage.database import get_setting, set_setting
 from src.utils.logger import get_logger
 
@@ -104,8 +104,7 @@ async def collect_handler(
         if new_articles:
             enabled = await get_setting("realtime_enabled")
             if enabled == "1":
-                await send_realtime_links(context.bot, new_articles)
-                await send_realtime_summaries(context.bot, new_articles)
+                await send_realtime_articles(context.bot, new_articles)
     except Exception as e:
         logger.error(f"Manual collection failed: {e}")
         await update.message.reply_text(

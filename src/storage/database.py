@@ -101,19 +101,26 @@ _DEFAULT_SETTINGS = [
 # Initial news sources (SOP Section 15)
 # ---------------------------------------------------------------------------
 INITIAL_SOURCES = [
+    # RSS sources
     ("Tom's Hardware", "https://www.tomshardware.com/feeds.xml"),
     ("MacRumors", "https://feeds.macrumors.com/MacRumors-All"),
     ("CNBC Technology", "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=19854910"),
     ("WCCFTech", "https://wccftech.com/feed/"),
+    ("SemiAnalysis", "https://semianalysis.com/feed/"),
+    # HTML sources (Korean)
     ("전자신문", "https://www.etnews.com/news/section.html?id1=06"),
     ("디일렉", "https://www.thelec.kr/news/articleList.html?sc_section_code=S1N2&view_type=sm"),
     ("ZDNet Korea", "https://zdnet.co.kr/news/?lstcode=0050&page=1"),
     ("한국경제", "https://www.hankyung.com/industry/semicon-electronics"),
+    ("TheBell", "https://www.thebell.co.kr/front/NewsList.asp?Code=0401"),
+    ("Dealsite", "https://dealsite.co.kr/categories/068020?page=2"),
+    # HTML sources (Global)
     ("TrendForce", "https://www.trendforce.com/news/"),
     ("DIGITIMES", "https://www.digitimes.com/tech/"),
     ("Omdia", "https://omdia.tech.informa.com/pr"),
     ("Counterpoint", "https://counterpointresearch.com/en/insights"),
-    ("SemiAnalysis", "https://semianalysis.com/"),
+    ("Nikkei Asia", "https://asia.nikkei.com/Business/Tech"),
+    ("DataCenterDynamics", "https://www.datacenterdynamics.com/en/news/"),
 ]
 
 

@@ -161,52 +161,7 @@ async def deliver_briefing(
 
 
 # ---------------------------------------------------------------------------
-# Realtime link alerts
-# ---------------------------------------------------------------------------
-def format_realtime_message(articles: list[dict]) -> str:
-    """Format a list of new articles into the realtime alert message."""
-    lines = ["\U0001f514 새 기사 알림", "\u2501" * 20, ""]
-    for a in articles:
-        lines.append(f"[{a['source_name']}] {a['title']}")
-        lines.append(a["url"])
-        lines.append("")
-    lines.append("\u2501" * 20)
-    lines.append(f"총 {len(articles)}건")
-    return "\n".join(lines)
-
-
-async def send_realtime_links(bot: telegram.Bot, articles: list[dict]) -> int:
-    """Send realtime link alerts for new articles and mark them as sent.
-
-    Args:
-        bot: Telegram Bot instance.
-        articles: List of dicts with keys: title, url, source_name.
-
-    Returns:
-        Number of users successfully delivered to.
-    """
-    if not articles:
-        return 0
-
-    msg = format_realtime_message(articles)
-    count = await send_to_all_users(bot, msg)
-
-    # Mark articles as realtime-sent in DB
-    db = await get_db()
-    urls = [a["url"] for a in articles]
-    placeholders = ",".join("?" for _ in urls)
-    await db.execute(
-        f"UPDATE articles SET is_realtime_sent = 1 WHERE url IN ({placeholders})",
-        urls,
-    )
-    await db.commit()
-
-    logger.info(f"Realtime alerts sent to {count} users ({len(articles)} articles)")
-    return count
-
-
-# ---------------------------------------------------------------------------
-# Realtime content summary (fetch + AI summarize)
+# Realtime article alerts (unified: title + summary + link)
 # ---------------------------------------------------------------------------
 async def _fetch_article_text(url: str) -> str | None:
     """Fetch article page and extract text content (first ~2000 chars)."""
@@ -220,52 +175,89 @@ async def _fetch_article_text(url: str) -> str | None:
         from bs4 import BeautifulSoup
 
         soup = BeautifulSoup(resp.text, "lxml")
-        # Remove script/style
         for tag in soup(["script", "style", "nav", "header", "footer"]):
             tag.decompose()
 
         text = soup.get_text(separator="\n", strip=True)
-        # Truncate to ~2000 chars to keep API costs low
         return text[:2000] if text else None
     except Exception as exc:
         logger.debug(f"Failed to fetch article text from {url}: {exc}")
         return None
 
 
-async def send_realtime_summaries(bot: telegram.Bot, articles: list[dict]) -> int:
-    """Fetch article content, summarize in Korean, and send to users.
+def _format_single_article(title: str, summary: str, url: str) -> str:
+    """Format a single article into a clean message block."""
+    return (
+        f"\U0001f4f0 {title}\n"
+        f"\n"
+        f"{summary}\n"
+        f"\n"
+        f"\U0001f517 {url}"
+    )
 
-    Sent as a follow-up message after the link alert.
+
+async def send_realtime_articles(bot: telegram.Bot, articles: list[dict]) -> int:
+    """Fetch, summarize, and send each article as a single unified message.
+
+    Each article is sent as one message:
+      [제목]
+      [요약]
+      [링크]
+
+    Args:
+        bot: Telegram Bot instance.
+        articles: List of dicts with keys: title, url, source_name.
+
+    Returns:
+        Number of users successfully delivered to.
     """
     if not articles:
         return 0
 
     from src.summarizer.briefing import summarize_text
 
-    summary_lines: list[str] = []
+    messages: list[str] = []
 
     for a in articles:
-        content = await _fetch_article_text(a["url"])
+        title = f"[{a['source_name']}] {a['title']}"
+        url = a["url"]
+
+        content = await _fetch_article_text(url)
         if content:
             summary = await summarize_text(content)
             if summary:
-                summary_lines.append(f"[{a['source_name']}] {a['title']}")
-                summary_lines.append(summary)
-                summary_lines.append("")
+                messages.append(_format_single_article(title, summary, url))
                 continue
 
-        # Fallback: title only
-        summary_lines.append(f"[{a['source_name']}] {a['title']}")
-        summary_lines.append("(본문 요약 불가)")
-        summary_lines.append("")
+        # Fallback: no summary available
+        messages.append(_format_single_article(title, "(본문 요약 불가)", url))
 
-    if not summary_lines:
+    # Send each article as a separate message
+    raw = await get_setting("telegram_chat_ids")
+    if not raw:
+        return 0
+    chat_ids: list[str] = json.loads(raw)
+    if not chat_ids:
         return 0
 
-    header = "\U0001f4dd 기사 내용 요약\n" + "\u2501" * 20 + "\n"
-    footer = "\u2501" * 20
-    msg = header + "\n".join(summary_lines) + footer
+    success_count = 0
+    for chat_id in chat_ids:
+        try:
+            for msg in messages:
+                await bot.send_message(chat_id=int(chat_id), text=msg)
+            success_count += 1
+        except telegram.error.TelegramError as exc:
+            logger.warning(f"Failed to send realtime to chat_id={chat_id}: {exc}")
 
-    count = await send_to_all_users(bot, msg)
-    logger.info(f"Realtime summaries sent to {count} users ({len(articles)} articles)")
-    return count
+    # Mark articles as realtime-sent in DB
+    db = await get_db()
+    urls = [a["url"] for a in articles]
+    placeholders = ",".join("?" for _ in urls)
+    await db.execute(
+        f"UPDATE articles SET is_realtime_sent = 1 WHERE url IN ({placeholders})",
+        urls,
+    )
+    await db.commit()
+
+    logger.info(f"Realtime articles sent to {success_count} users ({len(articles)} articles)")
+    return success_count
